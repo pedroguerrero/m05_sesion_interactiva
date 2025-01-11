@@ -8,13 +8,16 @@ import Container from '../components/Container';
 import DoctorList from '../components/DoctorList';
 import DoctorModal from '../components/DoctorModal';
 import { DoctorsContext } from '../../store/DoctorsContext';
-import { Doctor } from '../../entities/Doctor.entity';
+import { Doctor as IDoctor } from '../../entities/Doctor.entity';
+import { Doctor } from '../../classess/Doctor';
 
 export default function DoctorPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { doctors, setDoctors, showModalDoctor, setShowModalDoctor } =
     useContext(DoctorsContext);
-  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[] | IDoctor[]>(
+    []
+  );
 
   const filterBySpec = (specialty: string) => {
     specialty = specialty
@@ -24,16 +27,18 @@ export default function DoctorPage() {
       .replaceAll('í', 'i')
       .replaceAll('ó', 'o')
       .replaceAll('ú', 'u');
-    const filteredDoctors = doctors.filter((doctor) =>
-      doctor.specialty
-        .toLowerCase()
-        .replaceAll('á', 'a')
-        .replaceAll('é', 'e')
-        .replaceAll('í', 'i')
-        .replaceAll('ó', 'o')
-        .replaceAll('ú', 'u')
-        .includes(specialty)
-    );
+    const filteredDoctors = doctors
+      .filter((doctor) =>
+        doctor.specialty
+          .toLowerCase()
+          .replaceAll('á', 'a')
+          .replaceAll('é', 'e')
+          .replaceAll('í', 'i')
+          .replaceAll('ó', 'o')
+          .replaceAll('ú', 'u')
+          .includes(specialty)
+      )
+      .map((doctor) => new Doctor(doctor));
 
     setFilteredDoctors(filteredDoctors);
 

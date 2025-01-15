@@ -1,4 +1,5 @@
 import docImg from '../../assets/doc-1.png';
+import { Doctor } from '../../classess/Doctor';
 
 export const getDoctors = async () => {
   const specialties = ['Pediatría', 'Cardiología', 'Cirugía', 'Traumatología'];
@@ -18,5 +19,5 @@ export const getDoctors = async () => {
     experience: Math.floor(Math.random() * 10) + 1,
     description:
       'Some quick example text to build on the card title and make up the bulk of the cards content.',
-  }));
+  })) as Doctor[];
 };
